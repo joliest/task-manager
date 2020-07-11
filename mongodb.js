@@ -15,12 +15,29 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) =>
 
     // db ref
     const db = client.db(databaseName)
-    db.collection('users').insertOne({
-        name: 'Joli',
-        age: 28
-    }, (error, result) => {
+    // db.collection('users').insertOne({
+    //     name: 'Joli',
+    //     age: 28
+    // }, (error, result) => {
+    //     if (error) {
+    //         return console.log('Unable to insert user')
+    //     }
+
+    //     // ops is array of documet
+    //     console.log(result.ops)
+    // })
+
+    db.collection('users').insertMany([
+        {
+            name: 'Jen',
+            age: 28
+        }, {
+            name: 'Arlene',
+            age: 22
+        }
+    ], (error, result) => {
         if (error) {
-            return console.log('Unable to insert user')
+            return console.log('Unable to insert users')
         }
 
         // ops is array of documet
