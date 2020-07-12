@@ -19,4 +19,11 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) =>
 
     // db ref
     const db = client.db(databaseName)
+    db.collection('users').findOne({ name: 'Joli', age: 28}, (error, result) => {
+        if (error) {
+            return console.log('Unable to fetch')
+        }
+
+        console.log(result)
+    })
 });
