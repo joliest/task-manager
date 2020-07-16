@@ -33,6 +33,17 @@ const User = mongoose.model('User', {
                 throw new Error('Age must be valid')
             }
         }
+    },
+    password: {
+        type: String,
+        required: true,
+        trim: true,
+        minLength: 6,
+        validate(value) {
+            if (value.toLowerCase().includes('password')) {
+                throw new Error('Password cannot contain "password"')
+            }
+        }
     }
 })
 
