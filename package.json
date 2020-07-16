@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "mongo": "mongod --dbpath=C:/Users/Joliver/mongodb-data"
+    "mongo": "mongod --dbpath=C:/Users/Joliver/mongodb-data",
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
   },
   "keywords": [],
   "author": "",
