@@ -6,7 +6,8 @@
   "scripts": {
     "mongo": "mongod --dbpath=C:/Users/Joliver/mongodb-data",
     "start": "node src/index.js",
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon src/index.js",
+    "mac": "mongod --dbpath=/Users/joliverestampador/mongodb-data/"
   },
   "keywords": [],
   "author": "",
