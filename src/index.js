@@ -2,13 +2,14 @@ const express =  require('express')
 require('./db/mongoose')
 const User = require('./models/user')
 const Task = require('./models/task')
-const { ObjectID } = require('mongodb')
+const UserRouter = require('./routers/user')
 
 const app = express()
 const port = process.env.PORT || 3000
 
 // to automatically parse incoming json to js object {}
 app.use(express.json())
+app.use(UserRouter)
 
 app.post('/users', async (req, res) => {
     const user = new User(req.body)
