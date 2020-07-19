@@ -68,6 +68,20 @@ app.patch('/users/:id', async (req, res) => {
     }
 })
 
+app.delete('/users/:id', async (req, res) => {
+    try {
+        const userToBeDeleted = await User.findByIdAndDelete(req.params.id)
+
+        if (!userToBeDeleted) {
+            return res.status(404).send()
+        }
+
+        res.send(userToBeDeleted)
+    } catch (e) {
+        res.status(500).send()
+    }
+})
+
 app.post('/tasks', async (req, res) => {
     const task = new Task(req.body)
 
@@ -120,6 +134,20 @@ app.get('/tasks/:id', async (req, res) => {
             return res.status(404).send()
         }
         res.send(task)
+    } catch (e) {
+        res.status(500).send()
+    }
+})
+
+app.delete("/tasks/:id", async (req, res) => {
+    try {
+        const taskToBeDeleted = await Task.findByIdAndDelete(req.params.id)
+
+        if (!taskToBeDeleted) {
+            return res.send(404).send()
+        }
+
+        res.send(taskToBeDeleted)
     } catch (e) {
         res.status(500).send()
     }
