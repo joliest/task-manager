@@ -22,9 +22,15 @@ const myFunction = async () => {
     const token = jwt.sign({ 
         // data embedded to your token
         _id: 'abcd123'
-     }, 'thisismynewcourse');
-
+        // add secret code
+     }, 'thisIsASecret', {
+         expiresIn: '7 days'
+     });
      console.log(token)
+
+     // to verify if its a valid token, secret sould be the same
+     const data = jwt.verify(token, 'thisIsASecret')
+     console.log(data)
 }
 
 myFunction()
