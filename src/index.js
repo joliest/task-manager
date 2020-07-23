@@ -7,6 +7,12 @@ const TaskRouter = require('./routers/task')
 const app = express()
 const port = process.env.PORT || 3000
 
+// make sure it's above app.use() calls
+// middleware
+app.use((req, res, next) => {
+    res.status(503).send('Service temporarily unavailable')
+})
+
 app.use(express.json())
 app.use(UserRouter)
 app.use(TaskRouter)
