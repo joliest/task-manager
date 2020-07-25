@@ -15,6 +15,8 @@ const auth = async (req, res, next) => {
             throw new Error()
         }
 
+        // store the token in request, to be accessed in routers
+        req.token = token
         req.user = user
         
         next()

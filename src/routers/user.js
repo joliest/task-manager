@@ -27,6 +27,22 @@ router.post('/users/login', async (req, res) => {
     }
 })
 
+router.post('/users/logout', auth, async (req, res) => {
+    try {
+        // removing the current token
+        req.user.tokens = req.user.tokens.filter((token) => {
+            return token.token !== req.token
+        })
+
+        // returns User model, able to access save()
+        await req.user.save();
+
+        res.send()
+    } catch (e) {
+        res.send(500).send()
+    }
+})
+
 
 // profile of authenticated user
 router.get('/users/me', auth, async (req, res) => {
