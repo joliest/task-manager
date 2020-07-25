@@ -61,20 +61,7 @@ router.get('/users/me', auth, async (req, res) => {
     res.send(req.user)
 })
 
-router.get('/users/:id', async (req, res) => {
-    try {
-        const user = await User.findById({ _id: req.params.id })
-        if (!user) {
-            return res.status(404).send()
-        }
-
-        res.send(user)
-    } catch (e) {
-        res.status(500).send()
-    }
-})
-
-router.patch('/users/:id', async (req, res) => {
+router.patch('/users/me', auth, async (req, res) => {
     const updates = Object.keys(req.body)
     const allowedUpdates = ['name', 'email', 'password', 'age']
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
@@ -84,36 +71,22 @@ router.patch('/users/:id', async (req, res) => {
     }
 
     try {
-
-        // enable to run middleware consistently
-        const user = await User.findById(req.params.id)
+        const user = req.user;
         updates.forEach(update => user[update] = req.body[update])
         await user.save()
-
-        // const user = await User.findByIdAndUpdate(req.params.id, req.body, { 
-        //     new: true, 
-        //     runValidators: true
-        // })
-
-        if (!user) {
-            return res.status(404).send()
-        }
-
         res.send(user)
     } catch (e) {
         res.status(400).send()
     }
 })
 
-router.delete('/users/:id', async (req, res) => {
+router.delete('/users/me', auth, async (req, res) => {
     try {
-        const userToBeDeleted = await User.findByIdAndDelete(req.params.id)
 
-        if (!userToBeDeleted) {
-            return res.status(404).send()
-        }
+        // deleting yourself
+        await req.user.remove()
 
-        res.send(userToBeDeleted)
+        res.send(req.user)
     } catch (e) {
         res.status(500).send()
     }
