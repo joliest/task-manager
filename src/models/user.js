@@ -50,6 +50,15 @@ const userSchema = new mongoose.Schema({
     }]
 })
 
+// virtual property - you dont want to store it but establish a relationship
+userSchema.virtual('tasks', {
+    ref: 'Task',
+    // where the local data is stored, owner uses _id a proeprty from User
+    localField: '_id',
+    // name of the field on Task (task has owner field)
+    foreignField: 'owner'
+})
+
 userSchema.statics.findByCredentials = async (email, password) => {
     const user = await User.findOne({ email })
     const ERROR = 'Unable to login'
