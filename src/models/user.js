@@ -80,6 +80,17 @@ userSchema.methods.generateAuthToken = async function () {
     return token
 }
 
+userSchema.methods.getPublicProfile = function () {
+    const user = this
+
+    const userObject = user.toObject()
+
+    delete userObject.password
+    delete userObject.tokens
+
+    return userObject
+}
+
 // hash the plain text before saving
 userSchema.pre('save', async function(next) {
 
