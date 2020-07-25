@@ -70,14 +70,14 @@ router.get('/tasks/:id', auth, async (req, res) => {
     }
 })
 
-router.delete("/tasks/:id", async (req, res) => {
+router.delete("/tasks/:id", auth, async (req, res) => {
     try {
-        const taskToBeDeleted = await Task.findByIdAndDelete(req.params.id)
+        const taskToBeDeleted = await Task.findOneAndDelete({ _id: req.params.id, owner: req.user._id })
 
         if (!taskToBeDeleted) {
             return res.send(404).send()
         }
-
+        
         res.send(taskToBeDeleted)
     } catch (e) {
         res.status(500).send()
