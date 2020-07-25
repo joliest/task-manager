@@ -35,7 +35,19 @@ router.post('/users/logout', auth, async (req, res) => {
         })
 
         // returns User model, able to access save()
-        await req.user.save();
+        await req.user.save()
+
+        res.send()
+    } catch (e) {
+        res.send(500).send()
+    }
+})
+
+router.post('/users/logoutAll', auth, async (req, res) => {
+    try {
+        req.user.tokens = []
+
+        await req.user.save()
 
         res.send()
     } catch (e) {
