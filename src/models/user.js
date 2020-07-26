@@ -49,6 +49,8 @@ const userSchema = new mongoose.Schema({
             required: true
         }
     }]
+}, {
+    timestamps: true
 })
 
 // virtual property - you dont want to store it but establish a relationship
