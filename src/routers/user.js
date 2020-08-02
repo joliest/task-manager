@@ -5,7 +5,6 @@ const User = require('../models/user')
 
 const router = new express.Router()
 const upload = multer({
-    dest: 'avatar',
     limits: {
         fileSize: 1000000
     },
@@ -68,7 +67,11 @@ router.post('/users/logoutAll', auth, async (req, res) => {
     }
 })
 
-router.post('/users/me/avatar', upload.single('avatar'), (req, res) => {
+router.post('/users/me/avatar', auth, upload.single('avatar'), async (req, res) => {
+    // works without 'dest' property
+    req.user.avatar = req.file.buffer
+
+    await req.user.save()
     res.send()
 }, (error, req, res, next) => {
     res.status(400).send({error: error.message})
@@ -106,6 +109,23 @@ router.delete('/users/me', auth, async (req, res) => {
         await req.user.remove()
 
         res.send(req.user)
+    } catch (e) {
+        res.status(500).send()
+    }
+})
+
+router.delete('/users/me/avatar', auth, async (req, res) => {
+    try {
+        const user =  req.user
+
+        if (!user) {
+            return res.status(500).send()
+        }
+
+        user.avatar = undefined
+        await user.save()
+
+        res.send(user)
     } catch (e) {
         res.status(500).send()
     }
