@@ -11,7 +11,18 @@ const port = process.env.PORT || 3000
 const multer = require('multer')
 // configuration
 const upload = multer({
-    dest: 'images'
+    dest: 'images',
+    limits: {
+        fileSize: 1000000,
+    },
+    // filters upload
+    fileFilter(req, file, callback) {
+        if (!file.originalname.match(/\.(doc|docx)$/)) {
+            return callback(new Error('Please upload a word document'))
+        }
+
+        callback(undefined, true)
+    }
 })
 
 // add upload as middleware
