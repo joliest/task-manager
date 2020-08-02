@@ -1,6 +1,7 @@
 const express = require('express')
 const auth = require('../middleware/auth')
 const multer = require('multer')
+const sharp = require('sharp')
 const User = require('../models/user')
 
 const router = new express.Router()
@@ -69,6 +70,14 @@ router.post('/users/logoutAll', auth, async (req, res) => {
 
 router.post('/users/me/avatar', auth, upload.single('avatar'), async (req, res) => {
     // works without 'dest' property
+    // req.user.avatar = req.file.buffer
+
+    // converts to png and resize it
+    const buffer = await sharp(req.file.buffer)
+                            .resize({ width: 250, height: 250 })
+                            .png()
+                            .toBuffer()
+
     req.user.avatar = req.file.buffer
 
     await req.user.save()
@@ -138,7 +147,7 @@ router.get('/users/:id/avatar', async (req, res) => {
             return new Error('Unable to find image')
         }
 
-        res.set('Content-Type', 'image/jpg')
+        res.set('Content-Type', 'image/png')
         res.send(user.avatar)
     } catch (e) {
         res.status(404).send()

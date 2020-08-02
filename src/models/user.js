@@ -95,6 +95,7 @@ userSchema.methods.generateAuthToken = async function () {
     return token
 }
 
+// removes in profile response
 userSchema.methods.toJSON = function () {
     const user = this
 
@@ -102,6 +103,7 @@ userSchema.methods.toJSON = function () {
 
     delete userObject.password
     delete userObject.tokens
+    delete userObject.avatar
 
     return userObject
 }
