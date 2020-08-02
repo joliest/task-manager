@@ -28,6 +28,11 @@ const upload = multer({
 // add upload as middleware
 app.post('/upload', upload.single('nameOfUpload'), (req, res) => {
     res.send()
+}, (error, req, res, next) => {
+    // its important to provide 4 options above
+    res.status(400).send({
+        error: error.message
+    })
 })
 
 app.use(express.json())
