@@ -6,7 +6,7 @@
   "scripts": {
     "mongo": "mongod --dbpath=C:/Users/Joliver/mongodb-data",
     "start": "node src/index.js",
-    "dev": "nodemon src/index.js",
+    "dev": "env-cmd ./config/dev.env nodemon src/index.js",
     "mac": "mongod --dbpath=/Users/joliverestampador/mongodb-data/"
   },
   "keywords": [],
@@ -24,6 +24,7 @@
     "validator": "^13.1.1"
   },
   "devDependencies": {
+    "env-cmd": "^8.0.2",
     "nodemon": "^2.0.4"
   }
 }
