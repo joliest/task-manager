@@ -7,7 +7,8 @@
     "mongo": "mongod --dbpath=C:/Users/Joliver/mongodb-data",
     "start": "node src/index.js",
     "dev": "env-cmd ./config/dev.env nodemon src/index.js",
-    "mac": "mongod --dbpath=/Users/joliverestampador/mongodb-data/"
+    "mac": "mongod --dbpath=/Users/joliverestampador/mongodb-data/",
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
@@ -25,6 +26,7 @@
   },
   "devDependencies": {
     "env-cmd": "^8.0.2",
+    "jest": "^26.2.2",
     "nodemon": "^2.0.4"
   }
 }
