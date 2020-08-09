@@ -3,6 +3,7 @@ const req = require('supertest')
 const User = require('../src/models/user')
 const jwt = require('jsonwebtoken')
 const mongoose = require('mongoose')
+const { findOne } = require('../src/models/user')
 
 // simulate authentication
 const userOneId = new mongoose.Types.ObjectId
@@ -24,18 +25,38 @@ beforeEach(async () => {
 })
 
 test('should sign up a new user', async () => {
-    await req(app).post('/users').send({
+    const response = await req(app).post('/users').send({
             name: 'Andres',
             email: 'andrew@example.com',
             password: 'Logmein+1234'
         }).expect(201)
+
+    // assert that the database is changed correctly
+    const user = await User.findById(response.body.user._id)
+    expect(user).not.toBeNull()
+
+    // assert response body
+    expect(response.body).toMatchObject({
+        user: {
+            name: 'Andres',
+            email: 'andrew@example.com'
+        },
+        token: user.tokens[0].token
+    })
+
+    // assert response body
+    expect(user.password).not.toBe('Logmein+1234')
 })
 
 test('Should login existing user', async () => {
-    await req(app).post('/users/login').send({
+    const response = await req(app).post('/users/login').send({
         email: userOne.email,
         password: userOne.password
     }).expect(200)
+
+    // response token should match user 2nd token
+    const user = await User.findById(userOneId)
+    expect(response.body.token).toBe(user.tokens[1].token)
 })
 
 test('Should not login non-existent user', async () => {
@@ -61,11 +82,15 @@ test('should not get profile for unauthenticated user', async () => {
 })
 
 test('should delete account for user', async () => {
-    await req(app)
+    const response = await req(app)
         .delete('/users/me')
         .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
         .send()
         .expect(200)
+
+    // check if user gets deleted into database
+    const user = await User.findById(userOneId)
+    expect(user).toBeNull()
 })
 
 
