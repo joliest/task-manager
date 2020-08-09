@@ -8,7 +8,7 @@
     "start": "node src/index.js",
     "dev": "env-cmd ./config/dev.env nodemon src/index.js",
     "mac": "mongod --dbpath=/Users/joliverestampador/mongodb-data/",
-    "test": "jest"
+    "test": "jest --watch"
   },
   "keywords": [],
   "author": "",
