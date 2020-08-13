@@ -4,6 +4,7 @@ const User = require('../src/models/user')
 const jwt = require('jsonwebtoken')
 const mongoose = require('mongoose')
 const { findOne } = require('../src/models/user')
+const { request } = require('express')
 
 // simulate authentication
 const userOneId = new mongoose.Types.ObjectId
@@ -99,6 +100,12 @@ test('should not delete account for unauthentucated user', async () => {
         .delete('/users/me')
         .send()
         .expect(401)
+})
+
+test('Should upload avatar image', async () => {
+    await request(app)
+        .post('/users/me/app')
+        .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
 })
 
 
